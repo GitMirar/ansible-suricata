@@ -1,0 +1,21 @@
+---
+- name: adding backports repository
+  apt_repository: repo='deb http://http.debian.net/debian stretch-backports main contrib non-free' state=present update_cache=yes
+
+- name: installing suricata
+  apt:
+    name: suricata
+    state: latest
+    default_release: stretch-backports
+    update_cache: yes
+
+- name: configuring suricata listening interface
+  lineinfile:
+    path: /etc/suricata/suricata.yaml
+    regexp: '^  - interface: eth0'
+    line: '  - interface: {{ suricata_interface }}'
+
+- name: restart suricata service
+  systemd:
+    name: suricata
+    state: restarted

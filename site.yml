@@ -1,0 +1,14 @@
+---
+- name: installing suricata from backports
+
+  hosts: all
+  remote_user: root
+  become: yes
+  become_method: sudo
+  gather_facts: True
+
+  vars:
+    suricata_interface: ens33
+
+  roles:
+    - { role: suricata, tags: ['suricata'] }
