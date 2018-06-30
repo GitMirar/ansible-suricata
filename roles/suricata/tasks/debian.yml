@@ -9,11 +9,16 @@
     default_release: stretch-backports
     update_cache: yes
 
-- name: configuring suricata listening interface
-  lineinfile:
-    path: /etc/suricata/suricata.yaml
-    regexp: '^  - interface: eth0'
-    line: '  - interface: {{ suricata_interface }}'
+- name: configuring suricata to listen on "{{ suricata_interface }}"
+  template:
+    src: "{{ role_path }}/files/suricata.yaml"
+    dest: /etc/suricata/suricata.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: fetching emerging rules with oinkmaster
+  shell: oinkmaster -C /etc/suricata/suricata-oinkmaster.conf -o /etc/suricata/rules/
 
 - name: restart suricata service
   systemd:

@@ -8,7 +8,7 @@
   gather_facts: True
 
   vars:
-    suricata_interface: ens33
+    suricata_interface: ens37
 
   roles:
     - { role: suricata, tags: ['suricata'] }
